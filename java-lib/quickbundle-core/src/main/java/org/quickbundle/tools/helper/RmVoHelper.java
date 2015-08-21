@@ -1066,4 +1066,56 @@ public final class RmVoHelper implements ICoreConstants {
     	}
     	return result;
     }
+	 /**
+     * 对Object打删除时间、删除标志，数据禁用和删除IP戳
+     * @author longsebo 2015-08-21
+     * @param request 来自页面的请求
+     * @param myVo 输入一个VO
+     */
+    public static int markLogicDeleteStamp(final HttpServletRequest request, Object thisObj) {
+        return accessVo(thisObj, new ITransctVoField() {
+            public int transctVo(BeanWrapper bw, PropertyDescriptor pd) {
+                if (!pd.getName().equals("class")) {
+					if (RmStringHelper.arrayContainString(DESC_DELETE_DATE, pd.getName())) {
+						setDateField(bw, pd);
+                        return 1;
+                    } else if (RmStringHelper.arrayContainString(DESC_DELETE_IP, pd.getName()) && request != null) {
+                        String create_ip = getIp(request);
+                        bw.setPropertyValue(pd.getName(), create_ip);
+                        return 1;
+                    } else if (pd.getName().equals(DESC_DELETE_FLAG)) {  //加上了打逻辑删除标记启用的戳，数据设为可用
+                        bw.setPropertyValue(pd.getName(), RM_YES);
+                        return 1;
+                    } else if (RmStringHelper.arrayContainString(DESC_DELETE_USER_ID, pd.getName()) && request != null) {
+                        String create_user_id = null;
+                        try {
+                            create_user_id = getRmUserId(request);
+                        } catch (Exception e) {
+                        	RmLogHelper.getLogger(RmVoHelper.class).warn("getRmUserId(request): " + e.getMessage());
+                        }
+                        bw.setPropertyValue(pd.getName(), create_user_id);
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                } else {
+                    return 0;
+                }
+            }
+        });
+    }
+    
+    /**
+     * 对Object列表打删除的时间和IP戳
+     * @author longsebo 2015-08-21
+     * @param request 来自页面的请求
+     * @param collection VO列表
+     */
+    public static int markLogicDeleteStamp(final HttpServletRequest request, Collection collection) {
+    	int result = 0;
+    	for(Object obj : collection) {
+    		result += markLogicDeleteStamp(request, obj);
+    	}
+    	return result;
+    }        
 }
