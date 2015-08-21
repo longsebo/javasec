@@ -12,14 +12,20 @@ import java.util.Map;
  * @since 1.0.0
  */
 public interface ICoreConstants {
-     
+    //修改创建时间和修改时间同时填的 bug modify by longsebo 2015-08-21
     //系统级定义    
-    public final static String[] DESC_CREATE_DATE = new String[]{"create_date", "modify_date", "ts"};  //描述创建时间
-    public final static String[] DESC_CREATE_IP = new String[]{"create_ip", "modify_ip"};  //描述创建IP
-    public final static String[] DESC_CREATE_USER_ID = new String[]{"create_user_id", "modify_user_id"};  //描述创建用户ID
-    public final static String[] DESC_MODIFY_DATE = new String[]{"modify_date", "ts"};  //描述修改时间
+    public final static String[] DESC_CREATE_DATE = new String[]{"create_date", "modify_date", "ts","create_time"};  //描述创建时间
+    public final static String[] DESC_CREATE_IP = new String[]{"create_ip"};  //描述创建IP
+    public final static String[] DESC_CREATE_USER_ID = new String[]{"create_user_id"};  //描述创建用户ID
+    public final static String[] DESC_MODIFY_DATE = new String[]{"modify_date", "ts","modify_time"};  //描述修改时间
     public final static String DESC_MODIFY_IP = "modify_ip";  //描述修改IP
     public final static String DESC_MODIFY_USER_ID = "modify_user_id";  //描述修改用户ID
+
+   //增加逻辑删除相关常量 add by longsebo 2015-08-21
+    public final static String[] DESC_DELETE_DATE = new String[]{"delete_time", "delete_date"};  //描述删除时间
+    public final static String[] DESC_DELETE_IP = new String[]{"delete_ip"};  //描述删除IP
+    public final static String[] DESC_DELETE_USER_ID = new String[]{"delete_user_id"};  //描述删除用户ID
+    public final static String DESC_DELETE_FLAG = "delete_flag";  //描述删除用户ID
 
     //数据库定义
     //数据库定义
